@@ -18,10 +18,14 @@ export class ProperyService {
   }
 
   async findOne(id: number) {
-    return await this.propertyRepo.findOne({ where: { id } });
+    const user = await this.propertyRepo.findOne({ where: { id } });
+    if (!user) throw new BadRequestException('user not found');
+    return user;
   }
 
   async updateUser(id: number, data: properyDto) {
+    const user = await this.propertyRepo.findOne({ where: { id } });
+    if (!user) throw new BadRequestException('user not found');
     await this.propertyRepo.update(id, data);
     return await this.propertyRepo.findOne({ where: { id } });
   }
